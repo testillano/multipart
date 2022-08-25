@@ -1,0 +1,15 @@
+add_library (${ERT_MULTIPART_TARGET_NAME} STATIC
+        ${CMAKE_CURRENT_LIST_DIR}/Consumer.cpp
+)
+
+target_include_directories(${ERT_MULTIPART_TARGET_NAME}
+  PUBLIC ${ERT_MULTIPART_INCLUDE_BUILD_DIR}
+)
+
+target_link_libraries(${ERT_MULTIPART_TARGET_NAME}
+PRIVATE
+-static
+)
+
+install(TARGETS ${ERT_MULTIPART_TARGET_NAME}
+        ARCHIVE DESTINATION lib/ert)
