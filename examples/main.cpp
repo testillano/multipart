@@ -97,6 +97,21 @@ void sighndl(int signal)
     }
 }
 
+class MyConsumer : public ert::multipart::Consumer {
+
+public:
+    MyConsumer(const std::string &boundary) : Consumer(boundary) {;}
+    ~MyConsumer() {;}
+
+    void receiveHeader(const std::string &name, const std::string &value) {
+        std::cout << "[header] " << name << ":" << value << '\n';
+    }
+
+    void receiveData(const std::string &data) {
+        std::cout << "[data] " << data << '\n';
+    }
+};
+
 int main(int argc, char* argv[]) {
 
     progname = basename(argv[0]);
@@ -108,7 +123,7 @@ int main(int argc, char* argv[]) {
     signal(SIGTERM, sighndl);
     signal(SIGINT, sighndl);
 
-    ert::multipart::Consumer consumer("abcdef12345");
+    MyConsumer consumer("abcdef12345");
 
     // Octetstream part: 0x26800126 (0x26 is '&')
     std::string bodyAsHex = "0x2d2d61626364656631323334350d0a436f6e74656e742d547970653a206170706c69636174696f6e2f6a736f6e0d0a0d0a7b226e314e6f74696679537562736372697074696f6e4964223a226e6f74696679537562736372697074696f6e49443030303031222c226e314d657373616765436f6e7461696e6572223a7b226e314d657373616765436c617373223a2255504450222c226e314d657373616765436f6e74656e74223a7b22636f6e74656e744964223a227565506f6c227d7d7d0d0a2d2d61626364656631323334350d0a436f6e74656e742d547970653a206170706c69636174696f6e2f6f637465742d73747265616d0d0a0d0a268001260d0a2d2d61626364656631323334352d2d";
@@ -130,7 +145,9 @@ int main(int argc, char* argv[]) {
     */
 
     std::cout << std::endl << "=== Body as string ===" << std::endl << body << std::endl;
-    std::cout << std::endl << "=== Body multipart decoded ===" << std::endl << consumer.decode(body) << std::endl;
+    std::cout << std::endl << "=== Body multipart decoded ===" << std::endl;
+    consumer.decode(body);
+    std::cout << std::endl;
 
     return 0;
 }

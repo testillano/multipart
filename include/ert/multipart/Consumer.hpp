@@ -73,53 +73,47 @@ size_t multipart_parser_execute(multipart_parser* p, const char *buf, size_t len
 void multipart_parser_set_data(multipart_parser* p, void* data);
 void *multipart_parser_get_data(multipart_parser* p);
 
-
 class Consumer {
     static int ReadHeaderName(multipart_parser* p, const char *at, size_t length);
-    static int ReadHeaderValue(multipart_parser* p, const char *at, size_t length)
-    {
-        Consumer* me = (Consumer*)multipart_parser_get_data(p);
-        me->output_.append(at, length);
-        me->output_.append("\n");
-
-        return 0;
-    }
-    static int ReadData(multipart_parser* p, const char *at, size_t length)
-    {
-        Consumer* me = (Consumer*)multipart_parser_get_data(p);
-        me->output_.append(at, length);
-        me->output_.append("\n");
-
-        return 0;
-    }
+    static int ReadHeaderValue(multipart_parser* p, const char *at, size_t length);
+    static int ReadData(multipart_parser* p, const char *at, size_t length);
 
     multipart_parser* parser_;
     multipart_parser_settings callbacks_;
-    std::string output_;
+
+    static std::string last_header_name_;
 
 public:
 
-    Consumer(const std::string& boundary)
-    {
-        memset(&callbacks_, 0, sizeof(multipart_parser_settings));
-        callbacks_.on_header_field = ReadHeaderName;
-        callbacks_.on_header_value = ReadHeaderValue;
-        callbacks_.on_part_data = ReadData;
+    /**
+    * Default constructor
+    *
+    * @param boundary Multipart boundary string
+    */
+    Consumer(const std::string& boundary);
+    ~Consumer();
 
-        parser_ = multipart_parser_init(boundary.c_str(), &callbacks_);
-        multipart_parser_set_data(parser_, this);
-    }
+    /**
+    * Decode body multipart
+    *
+    * @param body Body content
+    */
+    void decode(const std::string& body);
 
-    ~Consumer()
-    {
-        multipart_parser_free(parser_);
-    }
+    /**
+    * Callback for new decoded header
+    *
+    * @param name header name (i.e. content-type)
+    * @param value header value (i.e. application/json)
+    */
+    virtual void receiveHeader(const std::string &name, const std::string &value) = 0;
 
-    const std::string &decode(const std::string& body)
-    {
-        multipart_parser_execute(parser_, body.c_str(), body.size());
-        return output_;
-    }
+    /**
+    * Callback for new decoded data part
+    *
+    * @param data Body data
+    */
+    virtual void receiveData(const std::string &data) = 0;
 };
 
 }

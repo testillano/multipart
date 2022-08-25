@@ -333,15 +333,53 @@ size_t multipart_parser_execute(multipart_parser* p, const char *buf, size_t len
 
 // Consumer class:
 
+std::string Consumer::last_header_name_ = "";
+
 int Consumer::ReadHeaderName(multipart_parser* p, const char *at, size_t length)
 {
     Consumer* me = (Consumer*)multipart_parser_get_data(p);
-    me->output_.append(at, length);
-    me->output_.append("\n");
+    me->last_header_name_.assign(at, length);
 
     return 0;
 }
 
+
+int Consumer::ReadHeaderValue(multipart_parser* p, const char *at, size_t length)
+{
+    Consumer* me = (Consumer*)multipart_parser_get_data(p);
+    me->receiveHeader(last_header_name_, std::string(at, length));
+
+    return 0;
+}
+
+int Consumer::ReadData(multipart_parser* p, const char *at, size_t length)
+{
+    Consumer* me = (Consumer*)multipart_parser_get_data(p);
+    me->receiveData(std::string(at, length));
+
+    return 0;
+}
+
+Consumer::Consumer(const std::string& boundary)
+{
+    memset(&callbacks_, 0, sizeof(multipart_parser_settings));
+    callbacks_.on_header_field = ReadHeaderName;
+    callbacks_.on_header_value = ReadHeaderValue;
+    callbacks_.on_part_data = ReadData;
+
+    parser_ = multipart_parser_init(boundary.c_str(), &callbacks_);
+    multipart_parser_set_data(parser_, this);
+}
+
+Consumer::~Consumer()
+{
+    multipart_parser_free(parser_);
+}
+
+void Consumer::decode(const std::string& body)
+{
+    multipart_parser_execute(parser_, body.c_str(), body.size());
+}
 
 }
 }
