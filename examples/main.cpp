@@ -123,25 +123,25 @@ int main(int argc, char* argv[]) {
     signal(SIGTERM, sighndl);
     signal(SIGINT, sighndl);
 
-    MyConsumer consumer("abcdef12345");
+    MyConsumer consumer("7MA4YWxkTrZu0gW");
 
     // Octetstream part: 0x26800126 (0x26 is '&')
-    std::string bodyAsHex = "0x2d2d61626364656631323334350d0a436f6e74656e742d547970653a206170706c69636174696f6e2f6a736f6e0d0a0d0a7b226e314e6f74696679537562736372697074696f6e4964223a226e6f74696679537562736372697074696f6e49443030303031222c226e314d657373616765436f6e7461696e6572223a7b226e314d657373616765436c617373223a2255504450222c226e314d657373616765436f6e74656e74223a7b22636f6e74656e744964223a227565506f6c227d7d7d0d0a2d2d61626364656631323334350d0a436f6e74656e742d547970653a206170706c69636174696f6e2f6f637465742d73747265616d0d0a0d0a268001260d0a2d2d61626364656631323334352d2d";
+    std::string bodyAsHex = "0x2d2d374d41345957786b54725a753067570a436f6e74656e742d547970653a206170706c69636174696f6e2f6a736f6e0a0a7b22666f6f223a22626172227d0a2d2d374d41345957786b54725a753067570a436f6e74656e742d547970653a206170706c69636174696f6e2f6f637465742d73747265616d0a0a268001260a2d2d374d41345957786b54725a753067572d2d";
     std::string body;
     bool ok = fromHexString(bodyAsHex, body);
 
     /*
     This is the buffer:
 
-    --abcdef12345
+    --7MA4YWxkTrZu0gW
     Content-Type: application/json
 
-    {"n1NotifySubscriptionId":"notifySubscriptionID00001","n1MessageContainer":{"n1MessageClass":"UPDP","n1MessageContent":{"contentId":"uePol"}}}
-    --abcdef12345
+    {"foo":"bar"}
+    --7MA4YWxkTrZu0gW
     Content-Type: application/octet-stream
 
     &&
-    --abcdef12345--
+    --7MA4YWxkTrZu0gW--
     */
 
     std::cout << std::endl << "=== Body as string ===" << std::endl << body << std::endl;
