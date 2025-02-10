@@ -5,6 +5,7 @@
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/testillano)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/testillano/multipart/graphs/commit-activity)
 [![Main project workflow](https://github.com/testillano/multipart/actions/workflows/ci.yml/badge.svg)](https://github.com/testillano/multipart/actions/workflows/ci.yml)
+[![Docker Pulls](https://img.shields.io/docker/pulls/testillano/multipart.svg)](https://github.com/testillano/multipart/pkgs/container/multipart)
 
 This library is based on @iafonov multipart parser library (https://github.com/iafonov/multipart-parser-c).
 
