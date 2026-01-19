@@ -81,7 +81,7 @@ class Consumer {
     multipart_parser* parser_;
     multipart_parser_settings callbacks_;
 
-    static std::string last_header_name_;
+    std::string last_header_name_;
 
 public:
 

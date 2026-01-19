@@ -333,8 +333,6 @@ size_t multipart_parser_execute(multipart_parser* p, const char *buf, size_t len
 
 // Consumer class:
 
-std::string Consumer::last_header_name_ = "";
-
 int Consumer::ReadHeaderName(multipart_parser* p, const char *at, size_t length)
 {
     Consumer* me = (Consumer*)multipart_parser_get_data(p);
@@ -347,7 +345,7 @@ int Consumer::ReadHeaderName(multipart_parser* p, const char *at, size_t length)
 int Consumer::ReadHeaderValue(multipart_parser* p, const char *at, size_t length)
 {
     Consumer* me = (Consumer*)multipart_parser_get_data(p);
-    me->receiveHeader(last_header_name_, std::string(at, length));
+    me->receiveHeader(me->last_header_name_, std::string(at, length));
 
     return 0;
 }
