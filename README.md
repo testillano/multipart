@@ -1,7 +1,7 @@
 # C++ multipart wrapper library
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Documentation](https://codedocs.xyz/testillano/multipart.svg)](https://codedocs.xyz/testillano/multipart/index.html)
+[![Documentation](https://img.shields.io/badge/docs-doxygen-blue.svg)](https://testillano.github.io/multipart/doxygen/)
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://github.com/testillano)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/testillano/multipart/graphs/commit-activity)
 [![Main project workflow](https://github.com/testillano/multipart/actions/workflows/ci.yml/badge.svg)](https://github.com/testillano/multipart/actions/workflows/ci.yml)
